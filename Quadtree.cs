@@ -10,11 +10,9 @@ namespace flocking_sim
         public Rectangle Boundary { get; private set; }
         public List<Point> Elements { get; private set; } = new List<Point>();
         public int Capacity { get; private set; }
-        private RectangleShape shape;
 
-        private Quadtree Northwest { get; set; }
-        private Quadtree Northeast { get; set; }
-        private Quadtree Southwest { get; set; }
+#if DEBUG
+        private RectangleShape shape;
 
         internal void Draw(RenderWindow window)
         {
@@ -27,6 +25,14 @@ namespace flocking_sim
                 Southwest.Draw(window);
             }
         }
+#endif
+
+
+        private Quadtree Northwest { get; set; }
+        private Quadtree Northeast { get; set; }
+        private Quadtree Southwest { get; set; }
+
+
 
         private Quadtree Southeast { get; set; }
         private bool divided = false;
@@ -36,12 +42,14 @@ namespace flocking_sim
         {
             Boundary = boundary;
             Capacity = capacity;
+#if DEBUG
             shape = new RectangleShape();
             shape.Position = boundary.Position - boundary.Edges;
             shape.Size = boundary.Edges * 2;
             shape.FillColor = Color.Transparent;
             shape.OutlineThickness = 1;
             shape.OutlineColor = Color.Black;
+#endif
         }
 
         public Quadtree(float x, float y, float w, float h, int cap) : this(new Rectangle(x, y, w, h), cap)
@@ -75,7 +83,9 @@ namespace flocking_sim
                 if (!divided)
                 {
                     this.Subdivide();
+#if DEBUG
                     shape = null;
+#endif
                     divided = true;
                     foreach (var item in this.Elements)
                     {
@@ -115,9 +125,9 @@ namespace flocking_sim
             return results;
         }
 
-        public List<IPositionable> Query(Circumference range)
+        public List<Point> Query(Circumference range)
         {
-            List<IPositionable> results = new List<IPositionable>();
+            List<Point> results = new List<Point>();
 
             if (this.Boundary.Intersects(range))
                 if (!divided)
