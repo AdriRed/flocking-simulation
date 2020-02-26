@@ -115,6 +115,29 @@ namespace flocking_sim
             return results;
         }
 
+        public List<IPositionable> Query(Circumference range)
+        {
+            List<IPositionable> results = new List<IPositionable>();
+
+            if (this.Boundary.Intersects(range))
+                if (!divided)
+                {
+                    foreach (var element in Elements)
+                    {
+                        if (range.Contains(element)) results.Add(element);
+                    }
+                }
+                else
+                {
+                    results.AddRange(Northeast.Query(range));
+                    results.AddRange(Northwest.Query(range));
+                    results.AddRange(Southeast.Query(range));
+                    results.AddRange(Southwest.Query(range));
+                }
+
+            return results;
+        }
+
         public override string ToString()
         {
             if (!this.divided)

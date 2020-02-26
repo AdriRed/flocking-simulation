@@ -2,7 +2,7 @@ using SFML.System;
 
 namespace flocking_sim
 {
-    public class Rectangle : IContainable, IIntersectable<Rectangle>
+    public class Rectangle : IContainable, IIntersectable<Rectangle>, IIntersectable<Circumference>
     {
         public Vector2f Position { get; set; }
         public Vector2f Edges { get; set; }
@@ -37,6 +37,11 @@ namespace flocking_sim
         {
             return (p.Position.X > this.Position.X - this.Edges.X) && (p.Position.X < this.Position.X + this.Edges.X) &&
             (p.Position.Y > this.Position.Y - this.Edges.Y) && (p.Position.Y < this.Position.Y + this.Edges.Y);
+        }
+
+        public bool Intersects(Circumference other)
+        {
+            return other.Intersects(this);
         }
     }
 }

@@ -31,8 +31,8 @@ namespace flocking_sim
         private void RandomWalker()
         {
             Vector2f next = new Vector2f();
-            float dX = (float)rng.NextDouble() * 1 * 10 - 5;
-            float dY = (float)rng.NextDouble() * 1 * 10 - 5;
+            float dX = (float)rng.NextDouble() * 10 - 5;
+            float dY = (float)rng.NextDouble() * 10 - 5;
             float nextX = this.Position.X + dX, nextY = this.Position.Y + dY;
             if (nextX < 800 && nextX > 0) next.X = dX;
             if (nextY < 800 && nextY > 0) next.Y = dY;
