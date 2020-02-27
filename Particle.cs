@@ -23,6 +23,16 @@ namespace flocking_sim
 
         static Random rng = new Random();
 
+        public void Highlight()
+        {
+            this.FillColor = Color.White;
+        }
+
+        public void Reset()
+        {
+            this.FillColor = new Color(0x48, 0x49, 0x4B);
+        }
+
         public void UpdateEntity()
         {
             RandomWalker();

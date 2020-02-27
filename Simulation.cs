@@ -20,7 +20,7 @@ namespace flocking_sim
 
         public Simulation(uint width, uint height, string title, Color clearColor) : base(width, height, title, clearColor, 60)
         {
-            
+
         }
 
         public override void Draw(GameTime gameTime)
@@ -34,25 +34,25 @@ namespace flocking_sim
             DebugUtility.DrawPerformanceData(this);
 
         }
-        
+
         static Random rng = new Random();
 
         public override void Initialize()
         {
             float x = this.Window.Size.X / 2, y = this.Window.Size.Y / 2;
-            qt = new Quadtree(x, y, x, y, 5);
-            
-            for (int i = 0; i < 3000; i++)
+            qt = new Quadtree(x, y, x, y, QUADTREE_CAPACITY);
+
+            for (int i = 0; i < 100; i++)
             {
-                var part = new Particle(PARTICLE_RADIUS, new Vector2f(rng.Next(0, (int)Math.Floor(x*2d)), rng.Next(0, (int)Math.Floor(y*2d))));
+                var part = new Particle(PARTICLE_RADIUS, new Vector2f(rng.Next(0, (int)Math.Floor(x * 2d)), rng.Next(0, (int)Math.Floor(y * 2d))));
                 part.FillColor = Color.Red;
                 elements.Add(part);
                 qt.Insert(new Point(part.Position, part));
             }
-            
+
             Window.MouseButtonPressed += OnMousePressed;
             // queryshape = new Rectangle(rng.Next(300, 500), rng.Next(300, 500), rng.Next(100, 200), rng.Next(100, 200));
-            
+
             // if (queryArea is Circumference c) {
             //     queryShape = new CircleShape(c.Radius);
             //     queryShape.Position = c.Position - new Vector2f(c.Radius, c.Radius);
@@ -62,16 +62,16 @@ namespace flocking_sim
             //     queryShape.Size = queryShape.Edges * 2;
             // }*/
 
-            
+
             // queryShape.OutlineThickness = 2;
             // queryShape.OutlineColor = Color.Red;
             // queryShape.FillColor = Color.Transparent;
         }
         int PARTICLE_RADIUS = 10;
-        public void OnMousePressed(object sender, MouseButtonEventArgs args) 
+        public void OnMousePressed(object sender, MouseButtonEventArgs args)
         {
             if (args.Button != Mouse.Button.Left) return;
-            
+
             var part = new Particle(PARTICLE_RADIUS, new Vector2f(args.X, args.Y));
             part.FillColor = Color.Red;
             elements.Add(part);
@@ -82,26 +82,29 @@ namespace flocking_sim
         {
             DebugUtility.LoadContent();
         }
-
+        private int QUADTREE_CAPACITY = 5;
         public override void Update(GameTime gameTime)
         {
-            elements.ForEach(x => { 
+            elements.ForEach(x =>
+            {
                 x.UpdateEntity();
-                ((Particle)x).FillColor = Color.Blue;
+                ((Particle)x).Reset();
             });
             float x = this.Window.Size.X / 2, y = this.Window.Size.Y / 2;
-            qt = new Quadtree(x, y, x, y, 5);
+            qt = new Quadtree(x, y, x, y, QUADTREE_CAPACITY);
             elements.ForEach((x) => qt.Insert(new Point(x.Position, x)));
 
             foreach (var item in elements)
             {
                 var circum = new Circumference(item.Position, ((Particle)item).Radius);
                 var query = qt.Query(circum);
+                if (query.Count > 1)
+                    ((Particle)item).Highlight();
                 foreach (var other in query)
                 {
-                    if (item != other.Data) 
+                    if (item != other.Data)
                     {
-                        ((Particle)other.Data).FillColor = Color.Red;
+                        ((Particle)other.Data).Highlight();
                     }
                 }
                 // circum.Data.Intersected = false;
