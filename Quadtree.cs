@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using flocking_sim.Interfaces;
+using flocking_sim.Shapes;
 using SFML.Graphics;
 
 namespace flocking_sim

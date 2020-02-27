@@ -1,4 +1,4 @@
-namespace flocking_sim
+namespace flocking_sim.Interfaces
 {
     public interface IIntersectable<T> : IPositionable
     {

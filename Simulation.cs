@@ -7,6 +7,8 @@ using SFML.Graphics;
 using SFMLReady;
 using SFML.Window;
 using SFML.System;
+using flocking_sim.Interfaces;
+using flocking_sim.Shapes;
 
 namespace flocking_sim
 {

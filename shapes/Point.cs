@@ -1,8 +1,9 @@
 using System;
+using flocking_sim.Interfaces;
 using SFML.Graphics;
 using SFML.System;
 
-namespace flocking_sim
+namespace flocking_sim.Shapes
 {
     public class Point : IPositionable
     {

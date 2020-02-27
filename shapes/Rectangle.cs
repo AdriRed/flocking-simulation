@@ -1,6 +1,7 @@
+using flocking_sim.Interfaces;
 using SFML.System;
 
-namespace flocking_sim
+namespace flocking_sim.Shapes
 {
     public class Rectangle : IContainable, IIntersectable<Rectangle>, IIntersectable<Circumference>
     {
